@@ -131,7 +131,7 @@ public:
         path.addRoundedRect(QRectF(m/4.0,m/4.0,s.width()+m/2.0,s.height()+m/2.0),m,m) ;
         QPen pen(Qt::gray,m/7.0f);
         p.setPen(pen);
-        p.fillPath(path,QColor::fromHsv( index.data(POST_COLOR_ROLE).toInt()/255.0*360,40,220));	// varies the color according to the post author
+        p.fillPath(path,QColor::fromHsv( index.data(POST_COLOR_ROLE).toInt()/255.0*360,40,120));	// varies the color according to the post author
         p.drawPath(path);
 
         QAbstractTextDocumentLayout::PaintContext ctx;
