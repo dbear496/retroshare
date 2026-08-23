@@ -19,13 +19,15 @@
 cmake_minimum_required (VERSION 3.18.0)
 project(retroshare-gui VERSION 0.6.7 LANGUAGES CXX C)
 
+include(GNUInstallDirs)
 include(CMakeDependentOption)
 
 set(
-	RS_BIN_INSTALL_DIR
-	"${CMAKE_INSTALL_PREFIX}/bin"
+	RS_INSTALL_DATADIR
+	"${CMAKE_INSTALL_DATADIR}/retroshare"
 	CACHE PATH
-	"Path where to install retroshare-service compiled binary" )
+	"Path where to install RetroShare system wide data"
+)
 
 option(
 	RS_DEVELOPMENT_BUILD
@@ -230,7 +232,7 @@ if(WIN32)
 		target_link_options(${PROJECT_NAME} PRIVATE "-Wl,--export-all-symbols" "-Wl,--exclude-libs,libretroshare.a:libbitdht.a:librnp.a:libsexpp.a:libsam3.a")
 	endif()
 endif()
-install(TARGETS ${PROJECT_NAME} DESTINATION ${RS_BIN_INSTALL_DIR})
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 
 if(RS_USE_NATIVE_DIALOGS)
@@ -280,39 +282,48 @@ if(RS_SERVICE_DESKTOP)
 	if(UNIX AND NOT APPLE)
 		install(
 			FILES data/retroshare.svg
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/ )
+			DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/"
+		)
 
 		install(
 			FILES data/retroshare.xpm
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pixmaps/ )
+			DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps/"
+		)
 
 		install(
 			FILES data/24x24/apps/retroshare.png
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/24x24/apps/retroshare.png )
+			DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/24x24/apps/"
+		)
 
 		install(
 			FILES data/48x48/apps/retroshare.png
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/48x48/apps/retroshare.png )
+			DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/apps/"
+		)
 
 		install(
 			FILES data/64x64/apps/retroshare.png
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/64x64/apps/retroshare.png )
+			DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps/"
+		)
 
 		install(
 			FILES data/128x128/apps/retroshare.png
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/128x128/apps/retroshare.png )
+			DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps"
+		)
 
 		install(
 			FILES data/retroshare.desktop
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/data/retroshare.desktop )
+			DESTINATION "${CMAKE_INSTALL_DATADIR}/applications/"
+		)
 
 		install(
-			FILES gui/qss/chat/Bubble gui/qss/chat/Bubble_Compact
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/data/stylesheets/ )
+			DIRECTORY src/gui/qss/chat/Bubble src/gui/qss/chat/Bubble_Compact
+			DESTINATION "${RS_INSTALL_DATADIR}/stylesheets/"
+		)
 
 		install(
-			FILES src/sounds/ src/qss/
-			DESTINATION ${CMAKE_INSTALL_PREFIX}/ )
+			DIRECTORY src/sounds/ src/qss/
+			DESTINATION "${RS_INSTALL_DATADIR}"
+		)
 	endif(UNIX AND NOT APPLE)
 endif(RS_SERVICE_DESKTOP)
 

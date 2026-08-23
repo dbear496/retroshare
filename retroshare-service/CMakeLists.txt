@@ -11,12 +11,6 @@ include(CMakeDependentOption)
 
 
 
-set(
-	RS_BIN_INSTALL_DIR
-	"${CMAKE_INSTALL_PREFIX}/bin"
-	CACHE PATH
-	"Path where to install retroshare-service compiled binary" )
-
 option(
 	RS_DEVELOPMENT_BUILD
 	"Disable optimization to speed up build, enable verbose build log. \
@@ -68,7 +62,7 @@ include(FetchContent)
 # message(STATUS "Botan_FOUND=${Botan_FOUND}")
 # message(STATUS "BOTAN_LIBRARIES=${BOTAN_LIBRARIES}")
 # message(STATUS "BOTAN_INCLUDE_DIRS=${BOTAN_INCLUDE_DIRS}")
-# 
+#
 # find_package(json-c REQUIRED)
 # message(STATUS "json-c_FOUND=${json-c_FOUND}")
 # message(STATUS "JSON-C_LIBRARIES=${JSON-C_LIBRARIES}")
@@ -101,7 +95,7 @@ endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${RS_BIN_INSTALL_DIR})
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 ################################################################################
 

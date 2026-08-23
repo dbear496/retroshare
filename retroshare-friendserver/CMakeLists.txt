@@ -7,12 +7,6 @@ project(retroshare-friendserver)
 
 include(CMakeDependentOption)
 
-set(
-	RS_BIN_INSTALL_DIR
-	"${CMAKE_INSTALL_PREFIX}/bin"
-	CACHE PATH
-	"Path where to install retroshare-friendserver compiled binary" )
-
 option(
 	RS_DEVELOPMENT_BUILD
 	"Disable optimization to speed up build, enable verbose build log"
@@ -93,4 +87,4 @@ if(WIN32)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ws2_32)
 endif()
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${RS_BIN_INSTALL_DIR})
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
