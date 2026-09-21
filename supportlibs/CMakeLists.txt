@@ -185,6 +185,7 @@ endif()
 set(libsam3_external_BINARY_DIR ${libsam3_external_SOURCE_DIR})
 list(APPEND libsam3_external_BUILD_ENVIRONMENT
   "CC=set:${CMAKE_C_COMPILER}"
+	"AR=set:${CMAKE_AR}"
 )
 if(WIN32)
   list(APPEND libsam3_external_BUILD_ENVIRONMENT
@@ -199,6 +200,7 @@ ExternalProject_Add(
   BUILD_COMMAND ${envmod_build} make build
   INSTALL_COMMAND ""
   BUILD_IN_SOURCE TRUE
+	BUILD_ALWAYS TRUE
 	EXCLUDE_FROM_ALL YES
   BUILD_BYPRODUCTS "${libsam3_external_BINARY_DIR}/libsam3.a"
   BUILD_ENVIRONMENT_MODIFICATION ${libsam3_external_BUILD_ENVIRONMENT}
@@ -289,7 +291,7 @@ endif()
 set(RESTBED_DEVEL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/restbed")
 set(BUILD_TESTS OFF CACHE BOOL "build restbed tests")
 set(BUILD_SSL OFF CACHE BOOL "enable SSL support in restbed")
-if(NOT WIN32 AND EXISTS "${RESTBED_DEVEL_DIR}/CMakeLists.txt")
+if(EXISTS "${RESTBED_DEVEL_DIR}/CMakeLists.txt")
 	DevelFound(restbed)
 	list(APPEND RESTBED_DOWNLOAD_OPTIONS SOURCE_DIR "${RESTBED_DEVEL_DIR}")
 else()

@@ -20,20 +20,16 @@
 
 ExternalProject_Get_Property(libsam3_external SOURCE_DIR BINARY_DIR)
 
-if(NOT TARGET libsam3__libsam3)
-  add_library(libsam3__libsam3 INTERFACE)
-  target_link_libraries(libsam3__libsam3 INTERFACE "${BINARY_DIR}/libsam3.a")
-  target_include_directories(libsam3__libsam3 INTERFACE
-    "${SOURCE_DIR}/src/libsam3"
-    "${SOURCE_DIR}/src/libsam3a"
+if(NOT TARGET libsam3::libsam3)
+  add_library(libsam3::libsam3 STATIC IMPORTED)
+  set_target_properties(libsam3::libsam3 PROPERTIES
+    IMPORTED_LOCATION "${BINARY_DIR}/libsam3.a"
+    INTERFACE_INCLUDE_DIRECTORIES
+      "${SOURCE_DIR}/src/libsam3;${SOURCE_DIR}/src/libsam3a"
   )
-  add_dependencies(libsam3__libsam3 libsam3_external)
+  add_dependencies(libsam3::libsam3 libsam3_external)
 
   if(WIN32)
-    target_link_libraries(libsam3__libsam3 INTERFACE ws2_32)
+    target_link_libraries(libsam3::libsam3 INTERFACE ws2_32)
   endif()
-endif()
-
-if(NOT TARGET libsam3::libsam3)
-  add_library(libsam3::libsam3 ALIAS libsam3__libsam3)
 endif()
