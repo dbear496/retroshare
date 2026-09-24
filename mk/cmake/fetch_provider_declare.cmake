@@ -57,13 +57,31 @@ FetchContent_Declare(cmark
 
 
 ################################################################################
+### rapidjson
+
+set(RAPIDJSON_BUILD_EXAMPLES OFF CACHE BOOL "Build rapidjson examples.")
+set(RAPIDJSON_BUILD_TESTS OFF CACHE BOOL
+	"Build rapidjson perftests and unittests."
+)
+set(CMAKE_EXPORT_NO_PACKAGE_REGISTRY TRUE)
+FetchContent_Declare(RapidJSON
+	GIT_REPOSITORY "https://github.com/Tencent/rapidjson.git"
+	GIT_TAG "origin/master"
+	GIT_SHALLOW TRUE
+	GIT_PROGRESS TRUE
+	TIMEOUT 10
+	EXCLUDE_FROM_ALL
+)
+
+
+################################################################################
 ### sam3
 
 if(NOT TARGET sam3_external)
 set(sam3_external_SOURCE_DIR "sam3_external-prefix/src/sam3_external")
 set(sam3_external_BINARY_DIR ${sam3_external_SOURCE_DIR})
 list(APPEND sam3_external_BUILD_ENVIRONMENT
-  "CC=set:${CMAKE_C_COMPILER}"
+  "CC=set:${CMAKE_C_COMPILER} -fPIC"
 	"AR=set:${CMAKE_AR}"
 )
 if(WIN32)

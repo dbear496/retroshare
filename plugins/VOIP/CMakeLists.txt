@@ -58,7 +58,7 @@ else()
         get_filename_component(ts_name ${ts_file} NAME_WE)
         set(qm_src_file "${CMAKE_CURRENT_SOURCE_DIR}/lang/${ts_name}.qm")
         set(qm_bin_file "${CMAKE_CURRENT_BINARY_DIR}/${ts_name}.qm")
-        
+
         if(EXISTS ${qm_src_file})
             list(APPEND QM_FILES ${qm_src_file})
         elseif(LRELEASE_EXECUTABLE)
@@ -127,6 +127,8 @@ if(RS_DEVELOPMENT_BUILD)
 endif()
 
 # --- Includes ---
+find_package(OpenSSL REQUIRED)
+find_package(RapidJSON 1.1.0 REQUIRED)
 target_include_directories(VOIP PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/gui
@@ -135,7 +137,8 @@ target_include_directories(VOIP PRIVATE
     ${CMAKE_SOURCE_DIR}/libretroshare/src
     ${CMAKE_SOURCE_DIR}/retroshare-gui/src
     ${CMAKE_SOURCE_DIR}/retroshare-gui/src/gui
-    ${CMAKE_SOURCE_DIR}/supportlibs/rapidjson/include
+    $<TARGET_PROPERTY:RapidJSON,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:OpenSSL::Crypto,INTERFACE_INCLUDE_DIRECTORIES>
     ${AVCODEC_INCLUDE_DIRS}
     ${AVUTIL_INCLUDE_DIRS}
     ${SPEEX_INCLUDE_DIRS}
