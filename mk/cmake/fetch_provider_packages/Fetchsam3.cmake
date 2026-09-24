@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------ *\
-# mk/cmake/restbed-extra.cmake.in
+# mk/cmake/fetch_provider_packages/Fetchsam3.cmake
 # This file is part of RetroShare.
 #
 # Copyright (C) 2026      David Bears <dbear4q@gmail.com>
@@ -18,22 +18,24 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------ */
 
-if(BUILD_SHARED_LIBS)
-  set(RESTBED_TARGETS restbed-shared restbed-static)
-else()
-  set(RESTBED_TARGETS restbed-static restbed-shared)
-endif()
+cmake_minimum_required(VERSION 3.24...4.4)
 
-foreach(RESTBED_TARGET ${RESTBED_TARGETS})
-  if(TARGET ${RESTBED_TARGET})
-    if(NOT TARGET restbed::${RESTBED_TARGET})
-      add_library(restbed::${RESTBED_TARGET} ALIAS ${RESTBED_TARGET})
-      if(WIN32)
-        target_link_libraries(${RESTBED_TARGET} PRIVATE ws2_32 wsock32)
-      endif()
-    endif()
-    if(NOT TARGET restbed::restbed)
-      add_library(restbed::restbed ALIAS ${RESTBED_TARGET})
-    endif()
+ExternalProject_Get_Property(sam3_external SOURCE_DIR BINARY_DIR)
+set(${FETCH_PROVIDER_PACKAGE_NAME}_FOUND TRUE)
+
+if(NOT TARGET sam3::libsam3)
+  add_library(sam3::libsam3 STATIC IMPORTED)
+  set_target_properties(sam3::libsam3 PROPERTIES
+    IMPORTED_LOCATION "${BINARY_DIR}/libsam3.a"
+    INTERFACE_INCLUDE_DIRECTORIES
+      "${SOURCE_DIR}/src/libsam3;${SOURCE_DIR}/src/libsam3a"
+  )
+  add_dependencies(sam3::libsam3 sam3_external)
+
+  # make the directory so that CMake doesn't complain before sam3 is built
+  file(MAKE_DIRECTORY "${SOURCE_DIR}/src/libsam3" "${SOURCE_DIR}/src/libsam3a")
+
+  if(WIN32)
+    target_link_libraries(sam3::libsam3 INTERFACE ws2_32)
   endif()
-endforeach()
+endif()

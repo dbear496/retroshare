@@ -330,8 +330,6 @@ endif(RS_SERVICE_DESKTOP)
 ################################################################################
 
 if(RS_JSON_API)
-	find_package(restbed REQUIRED)
-	target_link_libraries(${PROJECT_NAME} PRIVATE restbed::restbed)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC RS_JSONAPI)
 endif(RS_JSON_API)
 
@@ -369,8 +367,8 @@ endif(RS_GUI_CMARK)
 
 # sam3 is used in gui/settings/ServerPage.cpp
 if(RS_USE_I2P_SAM3)
-	find_package(libsam3 REQUIRED)
-	target_link_libraries(${PROJECT_NAME} PRIVATE libsam3::libsam3)
+	find_package(sam3 REQUIRED)
+	target_link_libraries(${PROJECT_NAME} PRIVATE sam3::libsam3)
 	target_compile_definitions(${PROJECT_NAME}
 		PRIVATE
 		RS_USE_I2P_SAM3

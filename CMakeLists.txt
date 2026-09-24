@@ -4,11 +4,13 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-cmake_minimum_required(VERSION 3.24...4.4.1)
+cmake_minimum_required(VERSION 3.24...4.4)
+
+list(PREPEND CMAKE_PROJECT_TOP_LEVEL_INCLUDES
+	"${CMAKE_CURRENT_SOURCE_DIR}/mk/cmake/fetch_provider.cmake"
+)
+
 project(retroshare-superproject)
-
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/mk/cmake")
-
 
 # Configuration Options
 option(RS_GUI "Build RetroShare GUI" ON)
@@ -49,11 +51,19 @@ if(APPLE)
 	)
 endif()
 
+
+################################################################################
+### dependencies
+
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/mk/cmake")
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
+include(mk/cmake/fetch_provider_declare.cmake)
+
 ################################################################################
 ### add subdirectories
 
 # supportlibs first so dependencies are fetched and available
-add_subdirectory(supportlibs)
+# add_subdirectory(supportlibs)
 
 add_subdirectory(libretroshare)
 
