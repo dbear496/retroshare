@@ -43,6 +43,19 @@ else()
 	endfunction(EnvironmentModification)
 endif()
 
+
+################################################################################
+### cmark
+
+FetchContent_Declare(cmark
+	GIT_REPOSITORY "https://github.com/commonmark/cmark.git"
+	GIT_TAG "origin/master"
+	GIT_SHALLOW TRUE
+	GIT_PROGRESS TRUE
+	TIMEOUT 10
+)
+
+
 ################################################################################
 ### sam3
 

@@ -340,27 +340,9 @@ endif(RS_WEBUI)
 ################################# CMark ########################################
 
 if(RS_GUI_CMARK)
-	set(CMARK_DEVEL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../supportlibs/cmark/")
-	if(EXISTS "${CMARK_DEVEL_DIR}/CMakeLists.txt" )
-		message( STATUS "cmark submodule found at ${CMARK_DEVEL_DIR} using it" )
-		add_subdirectory( "${CMARK_DEVEL_DIR}" "${CMAKE_BINARY_DIR}/cmark" )
-		set(CMARK_INCLUDE_DIR "${CMARK_DEVEL_DIR}/src")
-	else()
-		FetchContent_Declare(
-			cmark
-			GIT_REPOSITORY "https://github.com/commonmark/cmark.git"
-			GIT_TAG "origin/master"
-			GIT_SHALLOW TRUE
-			GIT_PROGRESS TRUE
-			TIMEOUT 10
-			)
-		FetchContent_MakeAvailable(cmark)
-		set(CMARK_INCLUDE_DIR "${cmark_SOURCE_DIR}/src")
-	endif()
-
+	find_package(cmark REQUIRED)
 	target_compile_definitions(${PROJECT_NAME} PRIVATE USE_CMARK)
-	target_link_libraries(${PROJECT_NAME} PRIVATE libcmark_static)
-	target_include_directories(${PROJECT_NAME} PRIVATE "${CMARK_INCLUDE_DIR}")
+	target_link_libraries(${PROJECT_NAME} PRIVATE cmark)
 endif(RS_GUI_CMARK)
 
 ################################# LibSam v3 ####################################
