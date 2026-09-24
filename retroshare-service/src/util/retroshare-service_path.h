@@ -1,8 +1,7 @@
 /*******************************************************************************
- * util/retroshareWin32.h                                                      *
+ * util/retroshare-service_path.h                                              *
  *                                                                             *
- * Copyright (c) 2006-2007, crypton                                            *
- * Copyright (c) 2006, Matt Edman, Justin Hipple                               *
+ * Copyright (C) 2026  Retroshare Team       <retroshare.project@gmail.com>    *
  *                                                                             *
  * This program is free software: you can redistribute it and/or modify        *
  * it under the terms of the GNU Affero General Public License as              *
@@ -21,13 +20,7 @@
 
 #pragma once
 
-#include <QString>
+#include <string>
 
-/** Returns value of keyName or empty QString if keyName doesn't exist */
-QString win32_registry_get_key_value(QString keyLocation, QString keyName);
-
-/** Creates and/or sets the key to the specified value */
-void win32_registry_set_key_value(QString keyLocation, QString keyName, QString keyValue);
-
-/** Removes the key from the registry if it exists */
-void win32_registry_remove_key(QString keyLocation, QString keyName);
+/** Get file path of the main executable */
+std::string getMainExecutablePath(const char* argv0);
