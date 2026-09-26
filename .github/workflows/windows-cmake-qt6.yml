@@ -98,6 +98,8 @@ jobs:
           -DRS_BRODCAST_DISCOVERY=ON -DRS_SQLCIPHER=ON
           -DCMAKE_C_FLAGS="-include string.h -include stdint.h"
           -DCMAKE_CXX_FLAGS="-include cstring -include cstdint -Wno-template-body"
+          -DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations"
+          -DFETCH_PROVIDER_RapidJSON=FORCE
 
       - name: CMake build
         run: cmake --build Build-cmake -j3
