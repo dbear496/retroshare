@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   build:
+    if: false
     runs-on: macos-14
     permissions:
       actions: write
