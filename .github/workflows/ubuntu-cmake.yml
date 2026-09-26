@@ -72,6 +72,7 @@ jobs:
         -DRS_PLUGINS=ON -DRS_FORUM_DEEP_INDEX=OFF
         -DRS_USE_I2P_SAM3=ON -DRS_BITDHT=ON -DRS_MINIUPNPC=ON
         -DRS_BRODCAST_DISCOVERY=ON -DRS_SQLCIPHER=ON
+        -DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations"
 
     - name: CMake build
       run: cmake --build Build-cmake -j$(nproc)
