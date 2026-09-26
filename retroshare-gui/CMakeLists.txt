@@ -581,10 +581,10 @@ endif(RS_SANITIZE)
 #
 #                       haiku-* {
 #                       	PRE_TARGETDEPS *= ../../libretroshare/src/lib/libretroshare.a
-#                       	PRE_TARGETDEPS *= ../../openpgpsdk/src/lib/libops.a
+#                       	PRE_TARGETDEPS *= ../../supportlibs/openpgpsdk/src/lib/libops.a
 #
 #                       	LIBS *= ../../libretroshare/src/lib/libretroshare.a
-#                       	LIBS *= ../../openpgpsdk/src/lib/libops.a -lbz2 -lbsd
+#                       	LIBS *= ../../supportlibs/openpgpsdk/src/lib/libops.a -lbz2 -lbsd
 #                       	LIBS *= -lssl -lcrypto -lnetwork
 #                       	LIBS *= -lgpgme
 #                       	LIBS *= -lupnp

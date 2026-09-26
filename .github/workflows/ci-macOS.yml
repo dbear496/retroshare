@@ -62,7 +62,7 @@ jobs:
         run: |
           env
           git submodule update --init libretroshare/ retroshare-webui/
-          git submodule update --init supportlibs/libbitdht supportlibs/librnp supportlibs/rapidjson supportlibs/restbed openpgpsdk/
+          git submodule update --init supportlibs/libbitdht supportlibs/librnp supportlibs/rapidjson supportlibs/restbed supportlibs/openpgpsdk/
 
       - name: CI-Build
         run: |
