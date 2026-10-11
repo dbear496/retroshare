@@ -22,9 +22,38 @@ cmake_minimum_required(VERSION 3.0...4.4)
 
 if(NOT TARGET sam3_external)
 include(ExternalProject)
-find_package(Git REQUIRED)
-find_package(Patch REQUIRED)
 include(EnvironmentModification)
+
+# supportlibs/libsam3 is a submodule, so a source tarball carries it at the
+# pinned commit and a distribution build has no network. Prefer it: URL copies
+# the tree into the prefix, so BUILD_IN_SOURCE never touches the shared source.
+get_filename_component(sam3_super "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
+set(sam3_local "")
+if(EXISTS "${sam3_super}/supportlibs/libsam3/src/libsam3/libsam3.c")
+	set(sam3_local "${sam3_super}/supportlibs/libsam3")
+endif()
+
+if(sam3_local)
+	# The submodule already carries these fixes -- the patch reports all 50
+	# hunks as previously applied, and patch -N then exits non-zero -- so the
+	# in-tree copy is used as is.
+	message(STATUS "sam3: building from the in-tree ${sam3_local}")
+	set(sam3_source URL "${sam3_local}")
+	set(sam3_patch "")
+else()
+	find_package(Git REQUIRED)
+	find_package(Patch REQUIRED)
+	set(sam3_source
+		GIT_REPOSITORY "https://github.com/i2p/libsam3.git"
+		GIT_TAG "origin/master"
+		GIT_SHALLOW TRUE
+		GIT_PROGRESS TRUE
+	)
+	set(sam3_patch PATCH_COMMAND ${GIT_EXECUTABLE} reset --hard
+		COMMAND ${Patch_EXECUTABLE} -tNp1 -i
+			"${CMAKE_CURRENT_LIST_DIR}/sam3.patch"
+	)
+endif()
 
 set(sam3_external_SOURCE_DIR "sam3_external-prefix/src/sam3_external")
 set(sam3_external_BINARY_DIR ${sam3_external_SOURCE_DIR})
@@ -44,16 +73,11 @@ set(sam3_external_BUILD_ENVIRONMENT
 EnvironmentModification(envmod_build ${sam3_external_BUILD_ENVIRONMENT})
 
 ExternalProject_Add(sam3_external
-	GIT_REPOSITORY "https://github.com/i2p/libsam3.git"
-	GIT_TAG "origin/master"
-	GIT_SHALLOW TRUE
-	GIT_PROGRESS TRUE
+	${sam3_source}
 	TIMEOUT 10
 	CONFIGURE_COMMAND ""
   BUILD_COMMAND ${envmod_build} make build
-	PATCH_COMMAND ${GIT_EXECUTABLE} reset --hard
-	COMMAND ${Patch_EXECUTABLE} -tNp1 -i
-		"${CMAKE_CURRENT_LIST_DIR}/sam3.patch"
+	${sam3_patch}
 	INSTALL_COMMAND ""
 	BUILD_IN_SOURCE TRUE
 	BUILD_ALWAYS TRUE
